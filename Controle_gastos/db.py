@@ -40,7 +40,7 @@ class Registro(Base):
     valor = Column('valor', Float)
     data = Column('data', String)
     id_categoria = Column('id_categoria', ForeignKey('categorias.id'))
-    id_pessoas = Column('pessoa', ForeignKey('pessoas.id'))
+    id_pessoas = Column('id_pessoas', ForeignKey('pessoas.id'))
 
     # Inicialização da Classe Gastos:
     def __init__(self, item_name, valor, data, id_categoria, id_pessoas):

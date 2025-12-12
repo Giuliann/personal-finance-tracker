@@ -59,15 +59,8 @@ def menu():
 
             case 2:
                 lista_gastos()
-                if not lista_gastos():
-                    print('Ainda não exites nenhum gasto...')
-                    input('\nPresione ENTER para continuar...\n\n')
-                    
-                else:
-                    for gastos in lista_gastos():
-                        print(f'{gastos.item_name} {gastos.valor}')
-                        input('\nPresione ENTER para continuar...\n\n')
-
+                input('\nPresione ENTER para continuar...\n\n')
+                
             case 3:
                 print('Função ainda não implementada')
             case 4:

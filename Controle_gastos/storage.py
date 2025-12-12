@@ -2,7 +2,7 @@ from db import session, Person, Categorie, Registro
 from datetime import datetime
 
 #==========================#
-### Pessoas e Categorias ###
+###       Pessoas        ###
 #==========================#
 
 ### Função adiciona novo usuario ao banco: ###
@@ -23,6 +23,14 @@ def list_users():
             print(f'{pessoas.nome}')
 
     return lista_users
+
+def remove_user():
+    list_users()
+
+
+#==========================#
+###      Categorias      ###
+#==========================#
 
 ### Função adiciona uma nova categoria: ###
 def add_categoria(nome_categoria):
@@ -75,8 +83,17 @@ def add_registro(Item_nome, valor):
     registro = Registro(item_name= Item_nome, valor= valor, data= data_atual, id_categoria= categoria_id, id_pessoas = pessoa_id)
     session.add(registro)
     session.commit()
-    print('Reistro feito com Sucesso')
+    print('Registro feito com Sucesso')
 
 def lista_gastos():
     lista_gasto = session.query(Registro).all()
+    if not lista_gasto:
+        print('Ainda não exites nenhum registro...')
+        return None
+    else:
+        for gastos in lista_gasto:
+            dono_compra = session.query(Person).filter_by(id= gastos.id_pessoas).first()
+            categorias_compra = session.query(Categorie).filter_by(id= gastos.id_categoria).first()
+            print(f'{dono_compra.nome} | {categorias_compra.cat_name} | {gastos.item_name} - R${gastos.valor:.2f} ({gastos.data})')
+    
     return lista_gasto
