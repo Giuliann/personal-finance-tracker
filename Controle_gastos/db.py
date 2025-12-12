@@ -1,6 +1,5 @@
 ### Importações para funcionamento do banco ###
-from datetime import datetime
-from sqlalchemy import create_engine, Column, String, Integer, ForeignKey
+from sqlalchemy import create_engine, Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 
@@ -37,17 +36,19 @@ class Registro(Base):
     __tablename__ = 'registros'
 
     id = Column('id', Integer, primary_key= True, autoincrement= True)
-    item_name = Column('nome item', String)
-    valor = Column('valor', Integer)
-    date = Column('data', String)
-    id_categoria = Column('categoria', ForeignKey('categorias.id'))
+    item_name = Column('nome_item', String)
+    valor = Column('valor', Float)
+    data = Column('data', String)
+    id_categoria = Column('id_categoria', ForeignKey('categorias.id'))
     id_pessoas = Column('pessoa', ForeignKey('pessoas.id'))
 
     # Inicialização da Classe Gastos:
-    def __init__(self, item_name, valor):
+    def __init__(self, item_name, valor, data, id_categoria, id_pessoas):
         self.item_name = item_name
         self.valor = valor
-        self.data = datetime.now().date()
+        self.data = data
+        self.id_categoria = id_categoria
+        self.id_pessoas = id_pessoas
 
 
 Base.metadata.create_all(bind= db)
