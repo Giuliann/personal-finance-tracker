@@ -20,14 +20,24 @@ def list_users():
         return None
     else:
         for pessoas in lista_users:
-            print(f'{pessoas.nome}')
+            pessoa = session.query(Person).filter_by(id= pessoas.id).first()
+            print(f'{pessoa.id} - {pessoa.nome}')
 
     return lista_users
 
+### Função exibe a lista de usuarios e permite deletar um usuario do banco: ###
 def remove_user():
-    list_users()
+    lista_pessoas = session.query(Person).all()
+    for pessoas in lista_pessoas:
+        pessoa = session.query(Person).filter_by(id= pessoas.id).first()
+        print(f'{pessoa.id} - {pessoa.nome}')
 
-
+    print('Selecione a Pessoa que deseja remover')
+    print('Digite o id da Pessoa: ')
+    select = int(input('> '))
+    pessoa_delete = session.query(Person).filter_by(id= select).first()
+    session.delete(pessoa_delete)
+    session.commit()
 #==========================#
 ###      Categorias      ###
 #==========================#
@@ -47,36 +57,54 @@ def list_categoria():
         return None
     else:
         for categorias in lista_categorias:
-            print(f'{categorias.cat_name}')
+            categoria = session.query(Categorie).filter_by(id= categorias.id).first()
+            print(f'{categoria.id} - {categoria.cat_name}')
     return lista_categorias
 
+### Função exibe a lista de categorias e permite deletar uma categoria do banco: ###
+def remove_categoria():
+    lista_categorias = session.query(Categorie).all()
+    for categorias in lista_categorias:
+        categoria = session.query(Categorie).filter_by(id= categorias.id).first()
+        print(f'{categoria.id} - {categoria.cat_name}')
+
+    print('Selecione a Categoria que deseja remover')
+    print('Digite o id da Categoria: ')
+    select = int(input('> '))
+    categoria_delete = session.query(Categorie).filter_by(id= select).first()
+    session.delete(categoria_delete)
+    session.commit()
 
 #==========================#
 ### Registro de Gastos ###
 #==========================#
 
-### ###
+### Função adiciona um novo Registro ao banco de dados: ###
 def add_registro(Item_nome, valor):
 
     # Consulta a tabela das categorias: 
     list_categoria = session.query(Categorie).all()
-    cont = 1
     for categorias in list_categoria:
-        print(f'[{cont}] {categorias.cat_name}')
-        cont += 1
+        categoria = session.query(Categorie).filter_by(id= categorias.id).first()
+        print(f'[{categoria.id}] {categoria.cat_name}')
+    
     print('Escolha a categoria do seu registro: ')
+    print('Digite o id da Categoria: ')
     select = int(input('> '))
-    categoria_id = list_categoria[select - 1].id
+    categoria_id = select
 
     # Consulta a tabela dos usuarios: 
     list_pessoa = session.query(Person).all()
-    cont = 1
+
     for pessoas in list_pessoa:
-        print(f'[{cont} {pessoas.nome}]')
-        cont += 1
-    print('Selecione o a pessoa que fez a compra')
+        pessoa = session.query(Person).filter_by(id= pessoas.id).first()
+        print(f'[{pessoa.id} {pessoa.nome}]')
+
+
+    print('Selecione a pessoa que fez a compra')
+    print('Digite o id da Pessoa: ')
     select = int(input('> '))
-    pessoa_id = list_pessoa[select - 1].id
+    pessoa_id = select
 
     # Registra: 
     data_atual = datetime.now().strftime("%d-%m-%Y")
@@ -85,6 +113,7 @@ def add_registro(Item_nome, valor):
     session.commit()
     print('Registro feito com Sucesso')
 
+### Função lista todos os registro do banco: ###
 def lista_gastos():
     lista_gasto = session.query(Registro).all()
     if not lista_gasto:
@@ -97,3 +126,17 @@ def lista_gastos():
             print(f'{dono_compra.nome} | {categorias_compra.cat_name} | {gastos.item_name} - R${gastos.valor:.2f} ({gastos.data})')
     
     return lista_gasto
+
+def remove_registro():
+    lista_registros = session.query(Registro).all()
+    for registros in lista_registros:
+        registro = session.query(Registro).filter_by(id= registros.id).first()
+        dono_compra = session.query(Person).filter_by(id= registro.id_pessoas).first()
+        print(f'{registro.id}  Compra: {dono_compra.nome} | {registro.item_name} | R${registro.valor:.2f} - ({registro.data})')
+
+    print('Selecione o Registro que deseja remover')
+    print('Digite o id do Registro: ')
+    select = int(input('> '))
+    registro_delete = session.query(Registro).filter_by(id= select).first()
+    session.delete(registro_delete)
+    session.commit()

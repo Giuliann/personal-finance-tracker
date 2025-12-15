@@ -1,5 +1,5 @@
 ### Inicio do Programa ###
-from storage import add_user, add_categoria, add_registro, lista_gastos
+from storage import add_user, remove_user, add_categoria, remove_categoria, add_registro, remove_registro, lista_gastos
 
 def menu():
     print('--' * 25)
@@ -14,7 +14,7 @@ def menu():
         print('(1) Inserir Novo Gasto')
         print('(2) Listar Gastos')
         print('(3) Relatorio Geral')
-        print('(4) Remover Gasto')
+        print('(4) Remover Gasto, Usuarios e Categorias')
         print('(5) Fechar Programa...')
 
         select = int(input('> '))
@@ -64,7 +64,18 @@ def menu():
             case 3:
                 print('Função ainda não implementada')
             case 4:
-                print('Função ainda não implementada')
+                print('O que você deseja remover:')
+                print('[1] Remover Usuario')
+                print('[2] Remover Categoria')
+                print('[3] Remover Registro')
+                select = int(input('> '))
+                match select:
+                    case 1:
+                        remove_user()
+                    case 2:
+                        remove_categoria()
+                    case 3:
+                        remove_registro()
             case 5:
                 exit('Fim do Progama')
 
