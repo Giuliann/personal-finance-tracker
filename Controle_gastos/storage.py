@@ -6,11 +6,23 @@ from datetime import datetime
 #==========================#
 
 ### Função adiciona novo usuario ao banco: ###
-def add_user(nome):
-    user = Person(nome= nome)
-    session.add(user)
-    session.commit()
-    print(f'{user.nome} adicionado(a) com Sucesso!!')
+def add_user():
+    while True:
+        nome = input('Digite o nome da Pessoa: ')
+        user = Person(nome= nome)
+        session.add(user)
+        session.commit()
+        print(f'{user.nome} adicionado(a) com Sucesso!!')
+        print('\n\nDeseja adicionar mais pessoas?')
+        print('[1] Sim')
+        print('[2] Não')
+        select = int(input('> '))
+        match select:
+            case 1:
+                return add_user()
+            case 2:
+                break
+
 
 ### Função lista os usuarios da tabela "Person" do banco: ###
 def list_users():
@@ -43,11 +55,22 @@ def remove_user():
 #==========================#
 
 ### Função adiciona uma nova categoria: ###
-def add_categoria(nome_categoria):
-    categoria = Categorie(cat_name= nome_categoria)
-    session.add(categoria)
-    session.commit()
-    print(f'{categoria.cat_name} Adicionado com sucesso')
+def add_categoria():
+    while True:
+        nome_categoria = input('Digite o nome da Categoria: ')
+        categoria = Categorie(cat_name= nome_categoria)
+        session.add(categoria)
+        session.commit()
+        print(f'{categoria.cat_name} Adicionado com sucesso')
+        print('\n\nDeseja adicionar mais Categorias?')
+        print('[1] Sim')
+        print('[2] Não')
+        select = int(input('> '))
+        match select:
+            case 1:
+                return add_categoria()
+            case 2:
+                break
 
 ### Função lista as categorias da tabela "Categorie" do banco: ###
 def list_categoria():
@@ -80,38 +103,67 @@ def remove_categoria():
 #==========================#
 
 ### Função adiciona um novo Registro ao banco de dados: ###
-def add_registro(Item_nome, valor):
-
+def add_registro():
+    while True:
+        Item_nome = input('Digite o nome do produto: ')
+        valor = input('Digite o valor do item: R$')
     # Consulta a tabela das categorias: 
-    list_categoria = session.query(Categorie).all()
-    for categorias in list_categoria:
-        categoria = session.query(Categorie).filter_by(id= categorias.id).first()
-        print(f'[{categoria.id}] {categoria.cat_name}')
+        list_categoria = session.query(Categorie).all()
+        for categorias in list_categoria:
+            categoria = session.query(Categorie).filter_by(id= categorias.id).first()
+            print(f'[{categoria.id}] {categoria.cat_name}')
     
-    print('Escolha a categoria do seu registro: ')
-    print('Digite o id da Categoria: ')
-    select = int(input('> '))
-    categoria_id = select
+        print('Escolha a categoria do seu registro: ')
+        print('Digite o id da Categoria: ')
+        select = int(input('> '))
+        categoria_id = select
 
     # Consulta a tabela dos usuarios: 
-    list_pessoa = session.query(Person).all()
+        list_pessoa = session.query(Person).all()
 
-    for pessoas in list_pessoa:
-        pessoa = session.query(Person).filter_by(id= pessoas.id).first()
-        print(f'[{pessoa.id} {pessoa.nome}]')
+        for pessoas in list_pessoa:
+            pessoa = session.query(Person).filter_by(id= pessoas.id).first()
+            print(f'[{pessoa.id} {pessoa.nome}]')
 
 
-    print('Selecione a pessoa que fez a compra')
-    print('Digite o id da Pessoa: ')
-    select = int(input('> '))
-    pessoa_id = select
+        print('Selecione a pessoa que fez a compra')
+        print('Digite o id da Pessoa: ')
+        select = int(input('> '))
+        pessoa_id = select
+    
 
-    # Registra: 
-    data_atual = datetime.now().strftime("%d-%m-%Y")
-    registro = Registro(item_name= Item_nome, valor= valor, data= data_atual, id_categoria= categoria_id, id_pessoas = pessoa_id)
-    session.add(registro)
-    session.commit()
-    print('Registro feito com Sucesso')
+    # Registro da data: 
+        print('Deseja usar a data atual ou fornecer uma data?')
+        print('[1] Usar data atual')
+        print('[2] Fornecer uma data')
+        select = int(input('> '))
+        if select == 1:
+            data_atual = datetime.now().strftime("%d-%m-%Y")
+        elif select == 2:
+            print('Digite a data atual no formato (dd/mm/aaaa): ')
+            entrada = input('> ')
+            data_atual = datetime.strptime(entrada, '%d/%m/%Y').strftime('%d/%m/%Y')
+        else:
+            print('Essa opção não existe, usando data atual...')
+            data_atual = datetime.now().strftime("%d-%m-%Y")
+
+
+    # Registra:
+        registro = Registro(item_name= Item_nome, valor= valor, data= data_atual, id_categoria= categoria_id, id_pessoas = pessoa_id)
+        session.add(registro)
+        session.commit()
+        print('Registro feito com Sucesso')
+        print('\n\nDeseja adicionar mais Registros?')
+        print('[1] Sim')
+        print('[2] Não')
+        select = int(input('> '))
+        match select:
+            case 1:
+                return add_registro()
+            case 2:
+                break
+
+    
 
 ### Função lista todos os registro do banco: ###
 def lista_gastos():

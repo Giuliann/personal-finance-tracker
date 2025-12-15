@@ -28,13 +28,11 @@ def menu():
                 select = int(input('> '))
                 match select:
                     case 1:
-                        nome = input('Digite o nome da Pessoa: ')
-                        add_user(nome)
+                        add_user()
                         input('\nPresione ENTER para continuar...\n\n')
 
                     case 2:
-                        nome_categoria = input('Digite o nome da Categoria: ')
-                        add_categoria(nome_categoria)
+                        add_categoria()
                         input('\nPresione ENTER para continuar...\n\n')
 
                     case 3:
@@ -49,9 +47,7 @@ def menu():
                 match select:
 
                     case 1:
-                        Item_nome = input('Digite o nome do item: ')
-                        valor = input('Digite o valor do item: R$')
-                        add_registro(Item_nome, valor)
+                        add_registro()
                         input('\nPresione ENTER para continuar...\n\n')
 
                     case 2: 
