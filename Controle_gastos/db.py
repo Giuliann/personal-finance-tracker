@@ -38,14 +38,16 @@ class Registro(Base):
     id = Column('id', Integer, primary_key= True, autoincrement= True)
     item_name = Column('nome_item', String)
     valor = Column('valor', Float)
+    pagamento = Column('pagamento', String)
     data = Column('data', String)
     id_categoria = Column('id_categoria', ForeignKey('categorias.id'))
     id_pessoas = Column('id_pessoas', ForeignKey('pessoas.id'))
 
     # Inicialização da Classe Gastos:
-    def __init__(self, item_name, valor, data, id_categoria, id_pessoas):
+    def __init__(self, item_name, valor, pagamento, data, id_categoria, id_pessoas):
         self.item_name = item_name
         self.valor = valor
+        self.pagamento = pagamento
         self.data = data
         self.id_categoria = id_categoria
         self.id_pessoas = id_pessoas

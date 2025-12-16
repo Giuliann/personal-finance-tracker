@@ -107,6 +107,16 @@ def add_registro():
     while True:
         Item_nome = input('Digite o nome do produto: ')
         valor = input('Digite o valor do item: R$')
+        print('Qual a forma de Pagamento: ')
+        print('[1] Debito')
+        print('[2] Credito')
+        forma_pagar = int(input('> '))
+        if forma_pagar == 1:
+            forma_pagar = 'Debito'
+        elif forma_pagar == 2:
+            forma_pagar = 'Credito'
+        else:
+            print('Não existe essa opção...')
     # Consulta a tabela das categorias: 
         list_categoria = session.query(Categorie).all()
         for categorias in list_categoria:
@@ -149,7 +159,7 @@ def add_registro():
 
 
     # Registra:
-        registro = Registro(item_name= Item_nome, valor= valor, data= data_atual, id_categoria= categoria_id, id_pessoas = pessoa_id)
+        registro = Registro(item_name= Item_nome, valor= valor,pagamento= forma_pagar, data= data_atual, id_categoria= categoria_id, id_pessoas = pessoa_id)
         session.add(registro)
         session.commit()
         print('Registro feito com Sucesso')
@@ -175,7 +185,7 @@ def lista_gastos():
         for gastos in lista_gasto:
             dono_compra = session.query(Person).filter_by(id= gastos.id_pessoas).first()
             categorias_compra = session.query(Categorie).filter_by(id= gastos.id_categoria).first()
-            print(f'{dono_compra.nome} | {categorias_compra.cat_name} | {gastos.item_name} - R${gastos.valor:.2f} ({gastos.data})')
+            print(f'{dono_compra.nome} | {categorias_compra.cat_name} | {gastos.item_name} - {gastos.pagamento} R${gastos.valor:.2f} ({gastos.data})')
     
     return lista_gasto
 
@@ -184,7 +194,7 @@ def remove_registro():
     for registros in lista_registros:
         registro = session.query(Registro).filter_by(id= registros.id).first()
         dono_compra = session.query(Person).filter_by(id= registro.id_pessoas).first()
-        print(f'{registro.id}  Compra: {dono_compra.nome} | {registro.item_name} | R${registro.valor:.2f} - ({registro.data})')
+        print(f'{registro.id}  Compra: {dono_compra.nome} | {registro.item_name} | {registro.pagamento}  R${registro.valor:.2f} - ({registro.data})')
 
     print('Selecione o Registro que deseja remover')
     print('Digite o id do Registro: ')
