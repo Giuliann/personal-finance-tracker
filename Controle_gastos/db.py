@@ -1,5 +1,5 @@
 ### Importações para funcionamento do banco ###
-from sqlalchemy import create_engine, Column, String, Integer, Float, ForeignKey
+from sqlalchemy import create_engine, Column, String, Integer, Float, ForeignKey, Date
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 
@@ -9,6 +9,7 @@ session = Session()
 Base = declarative_base()
 
 ### Tabelas do Banco ###
+
 # Tabela de Pessoas:
 class Person(Base):
     __tablename__ = 'pessoas'
@@ -39,15 +40,17 @@ class Registro(Base):
     item_name = Column('nome_item', String)
     valor = Column('valor', Float)
     pagamento = Column('pagamento', String)
-    data = Column('data', String)
+    parcelas = Column('parcelas', Integer)
+    data = Column('data', Date)
     id_categoria = Column('id_categoria', ForeignKey('categorias.id'))
     id_pessoas = Column('id_pessoas', ForeignKey('pessoas.id'))
 
     # Inicialização da Classe Gastos:
-    def __init__(self, item_name, valor, pagamento, data, id_categoria, id_pessoas):
+    def __init__(self, item_name, valor, pagamento, parcelas, data, id_categoria, id_pessoas):
         self.item_name = item_name
         self.valor = valor
         self.pagamento = pagamento
+        self.parcelas = parcelas
         self.data = data
         self.id_categoria = id_categoria
         self.id_pessoas = id_pessoas

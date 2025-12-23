@@ -1,5 +1,6 @@
 from db import session, Person, Categorie, Registro
-from datetime import datetime
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 
 #==========================#
 ###       Pessoas        ###
@@ -106,17 +107,29 @@ def remove_categoria():
 def add_registro():
     while True:
         Item_nome = input('Digite o nome do produto: ')
-        valor = input('Digite o valor do item: R$')
+        valor = float(input('Digite o valor do item: R$'))
+        
+        # Forma de Pagamento: 
         print('Qual a forma de Pagamento: ')
         print('[1] Debito')
         print('[2] Credito')
         forma_pagar = int(input('> '))
         if forma_pagar == 1:
             forma_pagar = 'Debito'
+            parcelas = 1
+        
         elif forma_pagar == 2:
             forma_pagar = 'Credito'
+            print('Quantas parcelas você quer pagar?')
+            for x in range(1, 12):
+                print(f'{x}x de {valor/x:.2f}R$')
+            select = int(input('> '))
+            parcelas = select
+        
         else:
             print('Não existe essa opção...')
+
+
     # Consulta a tabela das categorias: 
         list_categoria = session.query(Categorie).all()
         for categorias in list_categoria:
@@ -148,19 +161,21 @@ def add_registro():
         print('[2] Fornecer uma data')
         select = int(input('> '))
         if select == 1:
-            data_atual = datetime.now().strftime("%d-%m-%Y")
+            data = date.today()
         elif select == 2:
-            print('Digite a data atual no formato (dd/mm/aaaa): ')
-            entrada = input('> ')
-            data_atual = datetime.strptime(entrada, '%d/%m/%Y').strftime('%d/%m/%Y')
+            print('Digite a data no formato (dd/mm/aaaa): ')
+            select = input('> ')
+            data = datetime.strptime(select, '%d/%m/%Y').date()
         else:
             print('Essa opção não existe, usando data atual...')
-            data_atual = datetime.now().strftime("%d-%m-%Y")
-
+            data = date.today()
 
     # Registra:
-        registro = Registro(item_name= Item_nome, valor= valor,pagamento= forma_pagar, data= data_atual, id_categoria= categoria_id, id_pessoas = pessoa_id)
-        session.add(registro)
+        for i in range(parcelas):
+            valor_parcela = valor / parcelas
+            data_parcela = data + relativedelta(months= i)
+            registro = Registro(item_name= Item_nome, valor= valor_parcela,pagamento= forma_pagar, parcelas= parcelas - i, data= data_parcela, id_categoria= categoria_id, id_pessoas = pessoa_id)
+            session.add(registro)
         session.commit()
         print('Registro feito com Sucesso')
         print('\n\nDeseja adicionar mais Registros?')

@@ -58,7 +58,7 @@ def menu():
                 input('\nPresione ENTER para continuar...\n\n')
                 
             case 3:
-                print('Função ainda não implementada')
+                print('Função não adicionada')
             case 4:
                 print('O que você deseja remover:')
                 print('[1] Remover Usuario')
