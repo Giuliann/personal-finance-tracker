@@ -32,25 +32,20 @@ def list_users():
         print('Ainda não exites nenhuma Pessoa...')
         return None
     else:
-        for pessoas in lista_users:
-            pessoa = session.query(Person).filter_by(id= pessoas.id).first()
+        for pessoa in lista_users:
             print(f'{pessoa.id} - {pessoa.nome}')
 
-    return lista_users
 
 ### Função exibe a lista de usuarios e permite deletar um usuario do banco: ###
 def remove_user():
-    lista_pessoas = session.query(Person).all()
-    for pessoas in lista_pessoas:
-        pessoa = session.query(Person).filter_by(id= pessoas.id).first()
-        print(f'{pessoa.id} - {pessoa.nome}')
-
+    list_users()
     print('Selecione a Pessoa que deseja remover')
     print('Digite o id da Pessoa: ')
     select = int(input('> '))
     pessoa_delete = session.query(Person).filter_by(id= select).first()
     session.delete(pessoa_delete)
     session.commit()
+
 #==========================#
 ###      Categorias      ###
 #==========================#
@@ -80,18 +75,13 @@ def list_categoria():
         print('Ainda não exites nenhuma Categoria...')
         return None
     else:
-        for categorias in lista_categorias:
-            categoria = session.query(Categorie).filter_by(id= categorias.id).first()
+        for categoria in lista_categorias:
             print(f'{categoria.id} - {categoria.cat_name}')
     return lista_categorias
 
 ### Função exibe a lista de categorias e permite deletar uma categoria do banco: ###
 def remove_categoria():
-    lista_categorias = session.query(Categorie).all()
-    for categorias in lista_categorias:
-        categoria = session.query(Categorie).filter_by(id= categorias.id).first()
-        print(f'{categoria.id} - {categoria.cat_name}')
-
+    list_categoria()
     print('Selecione a Categoria que deseja remover')
     print('Digite o id da Categoria: ')
     select = int(input('> '))
@@ -131,24 +121,14 @@ def add_registro():
 
 
     # Consulta a tabela das categorias: 
-        list_categoria = session.query(Categorie).all()
-        for categorias in list_categoria:
-            categoria = session.query(Categorie).filter_by(id= categorias.id).first()
-            print(f'[{categoria.id}] {categoria.cat_name}')
-    
+        list_categoria()
         print('Escolha a categoria do seu registro: ')
         print('Digite o id da Categoria: ')
         select = int(input('> '))
         categoria_id = select
 
     # Consulta a tabela dos usuarios: 
-        list_pessoa = session.query(Person).all()
-
-        for pessoas in list_pessoa:
-            pessoa = session.query(Person).filter_by(id= pessoas.id).first()
-            print(f'[{pessoa.id} {pessoa.nome}]')
-
-
+        list_users()
         print('Selecione a pessoa que fez a compra')
         print('Digite o id da Pessoa: ')
         select = int(input('> '))
