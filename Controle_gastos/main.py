@@ -1,5 +1,6 @@
 ### Inicio do Programa ###
 from storage import add_user, remove_user, add_categoria, remove_categoria, add_registro, remove_registro, lista_gastos
+from relatorio import relatorio_pessoa
 
 def menu():
     print('--' * 25)
@@ -58,7 +59,7 @@ def menu():
                 input('\nPresione ENTER para continuar...\n\n')
                 
             case 3:
-                print('Função não adicionada')
+                relatorio_pessoa()
             case 4:
                 print('O que você deseja remover:')
                 print('[1] Remover Usuario')
