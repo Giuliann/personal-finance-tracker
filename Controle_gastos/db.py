@@ -2,8 +2,7 @@
 from sqlalchemy import create_engine, Column, String, Integer, Float, ForeignKey, Date
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-
-db = create_engine("sqlite:///personal-finance-tracker/Controle_gastos/Banco/banco.db")
+db = create_engine(f"sqlite:///Controle_gastos/banco.db")
 Session = sessionmaker(bind= db)
 session = Session()
 Base = declarative_base()
