@@ -32,8 +32,8 @@ def list_users():
         print('Ainda não exites nenhuma Pessoa...')
         return None
     else:
-        for pessoa in lista_users:
-            print(f'{pessoa.id} - {pessoa.nome}')
+        for id, pessoa in lista_users:
+            print(f'{id} - {pessoa}')
 
 
 ### Função exibe a lista de usuarios e permite deletar um usuario do banco: ###
@@ -75,8 +75,8 @@ def list_categoria():
         print('Ainda não exites nenhuma Categoria...')
         return None
     else:
-        for categoria in lista_categorias:
-            print(f'{categoria.id} - {categoria.cat_name}')
+        for id, categoria in lista_categorias:
+            print(f'{id} - {categoria}')
     return lista_categorias
 
 ### Função exibe a lista de categorias e permite deletar uma categoria do banco: ###
@@ -172,24 +172,29 @@ def add_registro():
 
 ### Função lista todos os registro do banco: ###
 def lista_gastos():
-    lista_gasto = session.query(Registro).all()
+    lista_gasto = (session.query(Person.nome, Categorie.cat_name, Registro.item_name, Registro.pagamento, Registro.valor, Registro.data)
+                   .join(Person, Registro.id_pessoas == Person.id)
+                   .join(Categorie, Registro.id_categoria == Categorie.id)
+                   .all())
     if not lista_gasto:
         print('Ainda não exites nenhum registro...')
         return None
     else:
-        for gastos in lista_gasto:
-            dono_compra = session.query(Person).filter_by(id= gastos.id_pessoas).first()
-            categorias_compra = session.query(Categorie).filter_by(id= gastos.id_categoria).first()
-            print(f'{dono_compra.nome} | {categorias_compra.cat_name} | {gastos.item_name} - {gastos.pagamento} R${gastos.valor:.2f} ({gastos.data})')
+        for nome, categoria, item, pagamento, valor, data in lista_gasto:
+            print(f'{nome} | {categoria} | {item} - {pagamento} R${valor:.2f} Data: ({data})')
     
-    return lista_gasto
 
 def remove_registro():
-    lista_registros = session.query(Registro).all()
-    for registros in lista_registros:
-        registro = session.query(Registro).filter_by(id= registros.id).first()
-        dono_compra = session.query(Person).filter_by(id= registro.id_pessoas).first()
-        print(f'{registro.id}  Compra: {dono_compra.nome} | {registro.item_name} | {registro.pagamento}  R${registro.valor:.2f} - ({registro.data})')
+    lista_registros = (session.query(Person.nome, Categorie.cat_name, Registro.item_name, Registro.pagamento, Registro.valor, Registro.data)
+                   .join(Person, Registro.id_pessoas == Person.id)
+                   .join(Categorie, Registro.id_categoria == Categorie.id)
+                   .all())
+    if not lista_registros:
+        print('Ainda não existe nenhum registro...')
+    else:
+        for nome, categoria, item, pagamento, valor, data in lista_registros:
+            print(f'{nome} | {categoria} | {item} - {pagamento} R${valor:.2f} Data: ({data})')
+    
 
     print('Selecione o Registro que deseja remover')
     print('Digite o id do Registro: ')
