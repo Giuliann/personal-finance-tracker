@@ -15,7 +15,7 @@ class Person(Base):
     __tablename__ = 'pessoas'
 
     id = Column('id', Integer, primary_key= True, autoincrement= True)
-    nome = Column('nome', String)
+    nome = Column('nome', String(50))
 
     # Inicialização da Classe Pessoas:
     def __init__(self, nome):
@@ -26,7 +26,7 @@ class Categorie(Base):
     __tablename__ = 'categorias'
 
     id = Column('id', Integer, primary_key= True, autoincrement= True)
-    cat_name = Column('nome', String)
+    cat_name = Column('nome', String(20))
 
     # Inicialização da Classe Categoria:
     def __init__(self, cat_name):
@@ -37,7 +37,7 @@ class Registro(Base):
     __tablename__ = 'registros'
 
     id = Column('id', Integer, primary_key= True, autoincrement= True)
-    item_name = Column('nome_item', String)
+    item_name = Column('nome_item', String(30))
     valor = Column('valor', Float)
     pagamento = Column('pagamento', String)
     parcelas = Column('parcelas', Integer)

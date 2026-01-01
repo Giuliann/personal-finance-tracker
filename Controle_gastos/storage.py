@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 ### Função adiciona novo usuario ao banco: ###
 def add_user():
     while True:
-        nome = input('Digite o nome da Pessoa: ')
+        nome = input('Digite o nome da Pessoa: ').strip().title()
         user = Person(nome= nome)
         session.add(user)
         session.commit()
@@ -53,7 +53,7 @@ def remove_user():
 ### Função adiciona uma nova categoria: ###
 def add_categoria():
     while True:
-        nome_categoria = input('Digite o nome da Categoria: ')
+        nome_categoria = input('Digite o nome da Categoria: ').strip().title()
         categoria = Categorie(cat_name= nome_categoria)
         session.add(categoria)
         session.commit()
@@ -96,7 +96,7 @@ def remove_categoria():
 ### Função adiciona um novo Registro ao banco de dados: ###
 def add_registro():
     while True:
-        Item_nome = input('Digite o nome do produto: ')
+        Item_nome = input('Digite o nome do produto: ').strip().title()
         valor = float(input('Digite o valor do item: R$'))
         
         # Forma de Pagamento: 
@@ -168,7 +168,6 @@ def add_registro():
             case 2:
                 break
 
-    
 
 ### Função lista todos os registro do banco: ###
 def lista_gastos():
