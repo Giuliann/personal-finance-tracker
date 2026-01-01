@@ -21,6 +21,22 @@ class Person(Base):
     def __init__(self, nome):
         self.nome = nome
 
+# Tabela de Cartões: 
+class cartao(Base):
+    __tablename__ = 'cartão'
+
+    id = Column('id', Integer, primary_key= True, autoincrement= True)
+    limite = Column('limite', Float)
+    data_fechamento = Column('fechamento', Integer)
+    data_vencimento = Column('vancimento', Integer)
+    dono_cartao = Column('dono cartão', ForeignKey('pessoas.id'))
+
+    # Inicialização da Classe de Cartões: 
+    def __init__(self, limite, fechamento, vencimento):
+        self.limite = limite
+        self.data_fechamento = fechamento
+        self.data_vencimento = vencimento
+ 
 # Tabela de Categoria: 
 class Categorie(Base):
     __tablename__ = 'categorias'
