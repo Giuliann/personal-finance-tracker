@@ -139,6 +139,15 @@ def relatorio_total():
                             .filter(Registro.data >= inicio_mes)
                             .filter(Registro.data <= fim_mes)
                             .scalar()) or 0
+        
+        # Gasto por pessoa:
+        gasto_pessoa = (session.query(Person.nome, func.sum(Registro.valor))
+                        .join(Person, Registro.id_pessoas == Person.id)
+                        .filter(Registro.data >= inicio_mes)
+                        .filter(Registro.data <= fim_mes)
+                        .group_by(Person.nome)
+                        .all()
+                        )
 
         # Gasto total por categoria: 
         gasto_categoria = (session.query(Categorie.cat_name, func.sum(Registro.valor).label('total'))
@@ -150,6 +159,12 @@ def relatorio_total():
 
         print(f'\n\nTotal gasto no mês {gasto_mensal_t:.2f}R$')
         print(f'Media gasta no mês {gasto_mensal_m:.2f}R$') 
+
+
+        print('\n\nGasto por pessoa: ')
+        for pessoa, valor in gasto_pessoa:
+            print(f'{pessoa}: {valor:.2f}')
+
         print('\n\nGastos por Categoria: ')
         for categoria, total in gasto_categoria:
             print(f'{categoria}: {total:.2f}R$')              
