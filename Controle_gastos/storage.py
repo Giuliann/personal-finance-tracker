@@ -32,8 +32,8 @@ def list_users():
         print('Ainda não exites nenhuma Pessoa...')
         return None
     else:
-        for id, pessoa in lista_users:
-            print(f'{id} - {pessoa}')
+        for pessoa in lista_users:
+            print(f'{pessoa.id} - {pessoa.nome}')
 
 
 ### Função exibe a lista de usuarios e permite deletar um usuario do banco: ###
@@ -75,8 +75,8 @@ def list_categoria():
         print('Ainda não exites nenhuma Categoria...')
         return None
     else:
-        for id, categoria in lista_categorias:
-            print(f'{id} - {categoria}')
+        for categoria in lista_categorias:
+            print(f'{categoria.id} - {categoria.cat_name}')
     return lista_categorias
 
 ### Função exibe a lista de categorias e permite deletar uma categoria do banco: ###
@@ -167,8 +167,6 @@ def add_registro():
                 return add_registro()
             case 2:
                 break
-
-    
 
 ### Função lista todos os registro do banco: ###
 def lista_gastos():
