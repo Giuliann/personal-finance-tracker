@@ -1,21 +1,8 @@
 from db import Person, Categorie, Registro, session
+from datetime import date
 from sqlalchemy import func
 from storage import list_users
-from datetime import date
-
-ano_futuro = date.today().year + 2
-meses = { 1: 'Janeiro', 
-          2: 'Fevereiro',
-          3: 'Março',
-          4: 'Abril',
-          5: 'Maio',
-          6: 'Junho',
-          7: 'Julho',
-          8: 'Agosto',
-          9: 'Setembro',
-         10: 'Outubro',
-         11: 'Novembro',
-         12: 'Dezembro'}
+from utils import futuro, passado, meses
 
 # Exibe Relatorio Pessoal e Mensal do Usuario:  
 def relatorio_pessoa():
@@ -29,7 +16,7 @@ def relatorio_pessoa():
 
         # Seleciona o mês do relatorio: 
         print('Selecione o mês: ')
-        for num, mes in meses.items():
+        for num, mes in meses().items():
             print(f'[{num}] {mes}')
 
         print('Digite o número relacionado ao mês: ')
@@ -39,6 +26,16 @@ def relatorio_pessoa():
 
         print('Digite o ano do relatorio: ')
         ano = int(input('> '))
+        if ano > futuro():
+            print('O ano que você digitou é muito no futuro')
+            print('Usando ano atual...')
+            ano = date.today().year
+
+        elif ano < passado():
+            print('O ano digitado está muito no passado')
+            print('Usando ano atual...')
+            ano = date.today().year
+
 
         inicio_mes = date(ano, select, 1)
         fim_mes = date(ano, select + 1, 1)
@@ -49,6 +46,11 @@ def relatorio_pessoa():
                             .filter(Registro.data >= inicio_mes)
                             .filter(Registro.data <= fim_mes)
                             .all())
+        
+        if not lista_mensal:
+            print('Não existe relatorio para esse mês')
+            print('Volte novamente quando tiver feito algum registro')
+            break
         
         pessoa = session.query(Person).filter_by(id= pessoa_id).first()
         print(f'Lista de Produtor comprados entre {inicio_mes} e {fim_mes}: \n')
@@ -102,7 +104,7 @@ def relatorio_pessoa():
 def relatorio_total():
     while True:
         print('Digite o mês que gostaria de fazer relatorio: ')
-        for num, mes in meses.items():
+        for num, mes in meses().items():
             print(f'[{num}] {mes}')
 
         print('\nSelecione o mês: ')
@@ -114,6 +116,16 @@ def relatorio_total():
         print('Digite o ano do relatorio: ')
         ano = int(input('> '))
 
+        if ano > futuro():
+            print('O ano que você digitou é muito no futuro')
+            print('Usando ano atual...')
+            ano = date.today().year
+
+        elif ano < passado():
+            print('O ano digitado está muito no passado')
+            print('Usando ano atual...')
+            ano = date.today().year
+
         inicio_mes = date(ano, select, 1)
         fim_mes = date(ano, select + 1, 1)
 
@@ -123,6 +135,10 @@ def relatorio_total():
                         .filter(Registro.data >= inicio_mes)
                         .filter(Registro.data <= fim_mes)
                         .all())
+        if not lista_mensal:
+            print('Não existe relatorio para esse mês')
+            print('Volte novamente quando tiver feito algum registro')
+            break
         
         for pessoa, cat_name, valor, pagamento, parcelas, item, data in lista_mensal:
             print(f'{pessoa}: | {cat_name} | {item} {pagamento}  {parcelas}x {valor:.2f}R$ Data: {data}')
@@ -181,3 +197,7 @@ def relatorio_total():
             print('Não existe essa opção')
             print('Voltando para menu...')
             break
+
+
+def grafico():
+    print('')
