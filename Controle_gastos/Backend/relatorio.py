@@ -1,8 +1,9 @@
-from db import Person, Categorie, Registro, session
+from Controle_gastos.Backend.Database.db import session
+from Controle_gastos.Backend.Database.models import Person, Categorie, Registro
 from datetime import date
 from sqlalchemy import func
-from storage import list_users
-from utils import futuro, passado, meses
+from Controle_gastos.Backend.CRUD.Usuario import list_users
+from Controle_gastos.Backend.utils import futuro, passado, meses
 
 # Exibe Relatorio Pessoal e Mensal do Usuario:  
 def relatorio_pessoa():
@@ -71,7 +72,7 @@ def relatorio_pessoa():
                             .filter(Registro.data <= fim_mes)
                             .scalar()) or 0
             
-        # 
+        # media de gasto no mês por categoria:
         gasto_categoria = (session.query(Categorie.cat_name, func.sum(Registro.valor).label('total'))
                             .join(Categorie,Registro.id_categoria == Categorie.id)
                             .filter(Registro.id_pessoas == pessoa_id)
@@ -197,7 +198,3 @@ def relatorio_total():
             print('Não existe essa opção')
             print('Voltando para menu...')
             break
-
-
-def grafico():
-    print('')

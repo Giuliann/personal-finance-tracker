@@ -185,3 +185,4 @@ __pycache__/
 *.pyc
 *.db
 .env
+token.json

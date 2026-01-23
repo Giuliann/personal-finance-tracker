@@ -1,4 +1,5 @@
 from datetime import date
+import os
 
 # Tempo de pesquisa maximo: 
 def futuro():
@@ -26,3 +27,6 @@ def meses():
          11: 'Novembro',
          12: 'Dezembro'}
     return meses
+
+def limpar():
+    os.system('cls')
